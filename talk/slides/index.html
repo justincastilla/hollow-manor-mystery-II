@@ -101,6 +101,15 @@
 
   .title-slide { justify-content: flex-end; padding-bottom: 132px; }
   .title-slide h1 { max-width: 980px; text-shadow: .045em .012em 0 rgba(236, 230, 216, .06); }
+  /* The cover: a VHS sleeve set down on the evidence table. */
+  .cover-slide { padding-right: 560px; }
+  .cover-slide h1 { font-size: 96px; line-height: .98; max-width: 540px; }
+  .cover {
+    position: absolute !important; right: 104px; top: 50%; width: 384px; height: 576px;
+    transform: translateY(-50%) rotate(2.2deg); object-fit: cover;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, .7), 0 0 0 1px rgba(236, 230, 216, .08);
+    filter: saturate(.9) contrast(1.02);
+  }
   .byline { font: 400 12px var(--mono); color: var(--muted); letter-spacing: 3px; text-transform: uppercase; margin-top: 30px; }
 
   /* Speaker notes: hidden on the slide, shown in a panel with N. */
@@ -129,9 +138,10 @@
 <div id="deck">
 
 <!-- 1 -->
-<section class="slide title-slide">
+<section class="slide title-slide cover-slide">
+  <img class="cover" src="cover.webp" alt="VHS cover for Hollow Manor II: the cast of suspects stacked in front of the manor in a storm">
   <p class="eyebrow">Hollow Manor, part II</p>
-  <h1>The Works-on-My-Machine Murder</h1>
+  <h1>The Killer Is Still in the House</h1>
   <p class="big muted">A Flox mystery in three clues</p>
   <p class="byline">Justin Castilla · Developer Advocate, Flox</p>
   <aside class="notes">
