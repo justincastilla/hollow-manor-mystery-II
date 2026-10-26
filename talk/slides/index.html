@@ -5,95 +5,116 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Works-on-My-Machine Murder</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0b0912;
-    --panel: #15111f;
-    --line: #2b2338;
-    --text: #e9e1d3;
-    --muted: #a99fb4;
-    --blood: #c4183a;
-    --candle: #e8c37a;
-    --moss: #8fbf8a;
-    --display: "Creepster", "Chiller", Georgia, serif;
-    --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --bg: #0d0c0b;
+    --text: #cfc8b8;
+    --hi: #ece6d8;
+    --muted: #8b857a;
+    --faint: #5f5a52;
+    --line: rgba(236, 230, 216, .12);
+    --hair: rgba(236, 230, 216, .06);
+    --wash: rgba(236, 230, 216, .025);
+    --red: #a3352a;
+    --display: "Instrument Serif", "Times New Roman", Georgia, serif;
+    --serif: "EB Garamond", Garamond, Georgia, serif;
     --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+    --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; background: #000; color: var(--text); font-family: var(--serif); }
-  body { overflow: hidden; }
+  body { overflow: hidden; -webkit-font-smoothing: antialiased; }
 
   /* Slides are authored at 1280x720 and scaled to fit the window. */
   #deck { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
   .slide {
     position: absolute; inset: 0; display: none; flex-direction: column; justify-content: center;
-    padding: 64px 96px; overflow: hidden;
-    background: radial-gradient(ellipse at 50% 0%, #1d1530 0%, var(--bg) 70%);
+    padding: 72px 112px 88px; overflow: hidden;
+    background:
+      var(--grain),
+      radial-gradient(ellipse 115% 95% at 38% 42%, transparent 45%, rgba(0, 0, 0, .62) 100%),
+      radial-gradient(ellipse 60% 50% at 18% 0%, rgba(236, 230, 216, .05), transparent 70%),
+      var(--bg);
   }
   .slide.active { display: flex; }
-  .slide::after {
-    content: attr(data-n); position: absolute; right: 32px; bottom: 22px;
-    font: 14px var(--mono); color: var(--muted); opacity: .6;
+  /* A hairline frame, like the border of an evidence photograph. */
+  .slide::before { content: ""; position: absolute; inset: 28px; border: 1px solid var(--hair); pointer-events: none; }
+  .slide > * { position: relative; }
+
+  .folio {
+    position: absolute !important; left: 56px; right: 56px; bottom: 42px; display: flex; justify-content: space-between;
+    font: 400 11px var(--mono); letter-spacing: 3px; text-transform: uppercase; color: var(--faint);
+  }
+  .exhibit {
+    position: absolute !important; right: 64px; bottom: 30px; font: italic 260px/1 var(--display);
+    color: var(--hi); opacity: .028; pointer-events: none; letter-spacing: -8px;
   }
 
-  h1, h2 { font-family: var(--display); font-weight: 400; letter-spacing: 1px; margin: 0 0 24px; color: var(--candle); }
-  h1 { font-size: 104px; line-height: 1; }
-  h2 { font-size: 64px; line-height: 1.05; }
-  p, li { font-size: 34px; line-height: 1.35; margin: 0 0 16px; }
-  .eyebrow { font: 600 18px var(--mono); letter-spacing: 4px; text-transform: uppercase; color: var(--blood); margin-bottom: 18px; }
-  .big { font-size: 46px; line-height: 1.25; }
+  h1, h2 { font-family: var(--display); font-weight: 400; margin: 0 0 28px; color: var(--hi); letter-spacing: -.5px; }
+  h1 { font-size: 120px; line-height: .95; }
+  h2 { font-size: 72px; line-height: 1.02; max-width: 1000px; }
+  p, li { font-size: 32px; line-height: 1.38; margin: 0 0 14px; }
+  .eyebrow {
+    display: flex; align-items: center; gap: 18px; margin-bottom: 22px;
+    font: 500 13px var(--mono); letter-spacing: 5px; text-transform: uppercase; color: var(--muted);
+  }
+  .eyebrow::before { content: ""; width: 44px; height: 1px; background: var(--muted); opacity: .7; }
+  .big { font-size: 40px; line-height: 1.3; }
   .muted { color: var(--muted); }
-  .blood { color: var(--blood); }
-  .candle { color: var(--candle); }
-  em { color: var(--candle); }
-  code { font-family: var(--mono); font-size: .8em; color: var(--candle); }
+  .blood { color: var(--red); font-style: italic; }
+  .candle { color: var(--hi); font-style: italic; }
+  em { color: var(--hi); font-style: italic; }
+  code { font-family: var(--mono); font-size: .72em; color: var(--hi); letter-spacing: -.2px; }
 
   pre {
-    margin: 0; padding: 22px 28px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
-    font: 24px/1.5 var(--mono); color: var(--text); white-space: pre; overflow: hidden;
+    margin: 0; padding: 20px 28px; background: var(--wash); border: 0; border-left: 1px solid var(--line);
+    font: 22px/1.6 var(--mono); color: var(--text); white-space: pre; overflow: hidden;
   }
-  pre .c { color: var(--muted); }
-  pre .k { color: var(--candle); }
-  pre .s { color: var(--moss); }
-  pre .p { color: var(--blood); }
-  .label { font: 600 16px var(--mono); letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+  pre .c { color: var(--faint); }
+  pre .k { color: var(--hi); }
+  pre .s { color: #a9a38f; }
+  pre .p { color: var(--red); }
+  /* Labels hold file paths and commands, so they keep their case. */
+  .label { font: 400 14px var(--mono); letter-spacing: 1px; color: var(--muted); margin: 0 0 12px; }
+  .byline.literal { text-transform: none; letter-spacing: 1px; font-size: 14px; }
 
-  .row { display: flex; gap: 32px; align-items: stretch; }
-  .row > * { flex: 1; }
-  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 28px; }
-  .card h3 { font: 600 34px var(--serif); margin: 0 0 8px; color: var(--candle); }
-  .card p { font-size: 28px; margin: 0; }
-  .card .who { font: 600 16px var(--mono); letter-spacing: 2px; text-transform: uppercase; color: var(--blood); margin-bottom: 14px; }
+  .row { display: flex; gap: 40px; align-items: stretch; }
+  .row > * { flex: 1; min-width: 0; }
+  .card { border-top: 1px solid var(--line); padding: 22px 0 0; }
+  .card h3 { font: 400 52px/1.05 var(--display); margin: 0 0 10px; color: var(--hi); }
+  .card p { font-size: 26px; margin: 0; }
+  .card .who { font: 500 12px var(--mono); letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
 
-  .layers { display: flex; flex-direction: column; gap: 14px; width: 760px; }
-  .layer { border-radius: 10px; padding: 20px 28px; font-size: 30px; display: flex; justify-content: space-between; align-items: center; }
-  .layer small { font: 18px var(--mono); color: var(--muted); }
-  .layer.project { background: #2a1a12; border: 2px solid var(--candle); color: var(--candle); }
-  .layer.mine { background: var(--panel); border: 1px solid var(--line); }
+  .layers { display: flex; flex-direction: column; gap: 12px; width: 720px; flex: none !important; }
+  .layer { padding: 20px 26px; font-size: 28px; display: flex; justify-content: space-between; align-items: center; }
+  .layer small { font: 400 14px var(--mono); letter-spacing: 1px; color: var(--muted); }
+  .layer.project { border: 1px solid rgba(236, 230, 216, .5); background: rgba(236, 230, 216, .05); color: var(--hi); font-style: italic; }
+  .layer.mine { border: 1px solid var(--hair); color: var(--muted); }
 
-  table { border-collapse: collapse; width: 100%; font-size: 30px; }
-  th { font: 600 16px var(--mono); letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0 20px 14px 0; border-bottom: 1px solid var(--line); }
-  td { padding: 18px 20px 18px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
-  td:first-child { color: var(--candle); }
-  td code { font-size: 26px; }
+  table { border-collapse: collapse; width: 100%; font-size: 28px; }
+  th { font: 500 12px var(--mono); letter-spacing: 3px; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0 24px 14px 0; border-bottom: 1px solid var(--line); }
+  td { padding: 16px 24px 16px 0; border-bottom: 1px solid var(--hair); vertical-align: top; }
+  td:first-child { color: var(--hi); font-style: italic; }
+  td code { font-size: 22px; }
 
-  .title-slide { text-align: center; align-items: center; }
-  .title-slide h1 { font-size: 112px; }
-  .candle-flame { font-size: 72px; margin-bottom: 8px; }
-  .byline { font: 20px var(--mono); color: var(--muted); letter-spacing: 1px; margin-top: 24px; }
+  .title-slide { justify-content: flex-end; padding-bottom: 132px; }
+  .title-slide h1 { max-width: 980px; text-shadow: .045em .012em 0 rgba(236, 230, 216, .06); }
+  .byline { font: 400 12px var(--mono); color: var(--muted); letter-spacing: 3px; text-transform: uppercase; margin-top: 30px; }
 
   /* Speaker notes: hidden on the slide, shown in a panel with N. */
   .notes { display: none; }
   #notes-panel {
     display: none; position: fixed; left: 0; right: 0; bottom: 0; max-height: 38vh; overflow: auto;
-    background: rgba(12, 9, 18, .96); border-top: 2px solid var(--blood);
+    background: rgba(10, 9, 8, .97); border-top: 1px solid var(--red);
     padding: 16px 28px 20px; font: 18px/1.5 system-ui, sans-serif; color: var(--text); z-index: 10;
   }
   #notes-panel.open { display: block; }
-  #notes-panel h4 { margin: 0 0 6px; font: 600 13px var(--mono); letter-spacing: 2px; text-transform: uppercase; color: var(--candle); }
+  #notes-panel h4 { margin: 0 0 6px; font: 500 12px var(--mono); letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
   #notes-panel p, #notes-panel li { font-size: 18px; margin: 0 0 6px; }
-  #hint { position: fixed; left: 16px; bottom: 12px; font: 12px var(--mono); color: #6d6478; z-index: 5; }
+  #notes-panel code { font-size: .9em; }
+  #hint { position: fixed; left: 16px; bottom: 12px; font: 11px var(--mono); letter-spacing: 1px; color: #4a4640; z-index: 5; }
 
   @media print {
     @page { size: 1280px 720px; margin: 0; }
@@ -109,7 +130,6 @@
 
 <!-- 1 -->
 <section class="slide title-slide">
-  <div class="candle-flame">🕯️</div>
   <p class="eyebrow">Hollow Manor, part II</p>
   <h1>The Works-on-My-Machine Murder</h1>
   <p class="big muted">A Flox mystery in three clues</p>
@@ -136,15 +156,30 @@
 <!-- 3 -->
 <section class="slide">
   <p class="eyebrow">Meet the detective</p>
-  <h2>A Flox environment is one file.</h2>
-  <p class="big">The <em>tools</em>, the <em>settings</em>, and the <em>services</em> a project needs.</p>
-  <p class="big">Every machine that activates it gets the same thing.</p>
+  <h2>Flox: an environment you can hand to anyone.</h2>
+  <div class="row" style="margin-top:12px">
+    <div class="card"><div class="who">Open source</div><h3>One CLI</h3><p class="muted">macOS and Linux. Laptops, CI, and servers.</p></div>
+    <div class="card"><div class="who">The catalog</div><h3>100,000+</h3><p class="muted">packages, from Python to Postgres to CUDA.</p></div>
+    <div class="card"><div class="who">FloxHub</div><h3>Shared</h3><p class="muted">Push an environment. Your team activates it by name.</p></div>
+  </div>
   <aside class="notes">
-    <p>"Tonight's detective is Flox." Read the slide; this is the one sentence they should remember.</p>
+    <p>"Tonight's detective is Flox. It's an open-source command-line tool for development environments: think virtualenv, but for everything a project needs, not just Python packages."</p>
+    <p>"It runs on macOS and Linux, the same way on a laptop, in CI, or on a server. The catalog has well over a hundred thousand packages. And FloxHub lets you share an environment the way you'd share a repo."</p>
   </aside>
 </section>
 
 <!-- 4 -->
+<section class="slide">
+  <p class="eyebrow">The method</p>
+  <h2>A Flox environment is one file.</h2>
+  <p class="big">The <em>tools</em>, the <em>settings</em>, and the <em>services</em> a project needs.</p>
+  <p class="big">Every machine that activates it gets the same thing.</p>
+  <aside class="notes">
+    <p>Read the slide; this is the one sentence they should remember.</p>
+  </aside>
+</section>
+
+<!-- 5 -->
 <section class="slide">
   <p class="eyebrow">How it feels</p>
   <h2>Your machine, plus the project.</h2>
@@ -166,14 +201,39 @@
   </aside>
 </section>
 
-<!-- 5 -->
+<!-- 6 -->
+<section class="slide">
+  <p class="eyebrow">Under the floorboards</p>
+  <h2>Beneath Flox, there is Nix.</h2>
+  <div class="row" style="align-items:center">
+    <div>
+      <p>Every package is built in isolation, from inputs that are hashed.</p>
+      <p>Each build gets its own address. Versions never overwrite each other.</p>
+      <p class="candle">Flox gives you that, without learning the Nix language.</p>
+    </div>
+    <div>
+      <p class="label">Where tonight's Python actually lives</p>
+      <pre><span class="c">/nix/store/</span>
+<span class="k">65p6ipj712fb5igr9w1h5k</span>
+<span class="k">5cb7bymj42</span><span class="s">-python3-3.12.13</span></pre>
+      <p class="muted" style="font-size:24px;margin-top:16px">Change any input, and the hash changes with it.</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>"How can Flox promise the same thing on every machine? Underneath is Nix, a package manager that started as research at Utrecht University twenty years ago, and Nixpkgs is one of the largest package collections in the world."</p>
+    <p>"Nix builds every package in isolation and names it by a hash of everything that went into it. That path is where the game's Python lives on this laptop. Same inputs, same hash, on any machine."</p>
+    <p>"Nix is powerful and famously hard to learn. Flox keeps the guarantees and gives you a TOML file and a handful of commands instead."</p>
+  </aside>
+</section>
+
+<!-- 7 -->
 <section class="slide">
   <p class="eyebrow">Clue 1</p>
   <h2>Two Pythons. Three witnesses.</h2>
   <div class="row">
     <div class="card"><div class="who">The README</div><h3>"3.9+"</h3><p class="muted">Any Python will do, apparently.</p></div>
     <div class="card"><div class="who">The Dockerfile</div><h3>3.12</h3><p class="muted"><code>FROM python:3.12-slim</code></p></div>
-    <div class="card"><div class="who">My laptop</div><h3>¯\_(ツ)_/¯</h3><p class="muted">Whatever it shipped with.</p></div>
+    <div class="card"><div class="who">My laptop</div><h3><em>Unknown.</em></h3><p class="muted">Whatever it shipped with.</p></div>
   </div>
   <pre style="margin-top:32px"><span class="c">$</span> flox init
 <span class="c">$</span> flox install <span class="k">python312</span>
@@ -185,7 +245,7 @@
   </aside>
 </section>
 
-<!-- 6 -->
+<!-- 8 -->
 <section class="slide">
   <p class="eyebrow">The evidence</p>
   <h2>What you asked for. What you got.</h2>
@@ -211,7 +271,7 @@ python.pkg-path = <span class="s">"python312"</span></pre>
   </aside>
 </section>
 
-<!-- 7 -->
+<!-- 9 -->
 <section class="slide">
   <p class="eyebrow">Clue 2</p>
   <h2>The key in the shell.</h2>
@@ -226,7 +286,7 @@ python.pkg-path = <span class="s">"python312"</span></pre>
   </aside>
 </section>
 
-<!-- 8 -->
+<!-- 10 -->
 <section class="slide">
   <p class="eyebrow">The rule</p>
   <h2>Settings are shared. Secrets are loaded.</h2>
@@ -255,7 +315,7 @@ on-activate = <span class="s">'''
   </aside>
 </section>
 
-<!-- 9 -->
+<!-- 11 -->
 <section class="slide">
   <p class="eyebrow">Clue 3</p>
   <h2>The server nobody managed.</h2>
@@ -274,7 +334,7 @@ command = <span class="s">'python3 "$FLOX_ENV_PROJECT/server.py"'</span></pre>
   </aside>
 </section>
 
-<!-- 10 -->
+<!-- 12 -->
 <section class="slide">
   <p class="eyebrow">The accusation</p>
   <h2>A clean machine. One command.</h2>
@@ -289,7 +349,7 @@ command = <span class="s">'python3 "$FLOX_ENV_PROJECT/server.py"'</span></pre>
   </aside>
 </section>
 
-<!-- 11 -->
+<!-- 13 -->
 <section class="slide">
   <p class="eyebrow">The reveal</p>
   <h2>Case closed.</h2>
@@ -305,14 +365,30 @@ command = <span class="s">'python3 "$FLOX_ENV_PROJECT/server.py"'</span></pre>
   </aside>
 </section>
 
-<!-- 12 -->
+<!-- 14 -->
+<section class="slide">
+  <p class="eyebrow">Postscript</p>
+  <h2>Your agents are new teammates, too.</h2>
+  <div class="row" style="margin-top:12px">
+    <div class="card"><div class="who">They read</div><h3>One file</h3><p class="muted">The manifest lists every tool, setting, and service. Nothing to guess.</p></div>
+    <div class="card"><div class="who">They run</div><h3>One command</h3><p class="muted"><code>flox activate -- pytest</code> runs inside the environment, no prompt needed.</p></div>
+    <div class="card"><div class="who">They change</div><h3>Nothing else</h3><p class="muted">An agent's <code>flox install</code> lands in the project, shows up in the diff, and rolls back with git.</p></div>
+  </div>
+  <aside class="notes">
+    <p>"Everything that helps a new teammate helps an AI coding agent even more. An agent can't ask you which Python you meant. It reads the manifest and knows."</p>
+    <p>"It runs commands with flox activate, double dash, the command, so tests and servers run with the project's tools. And when it installs something, it goes into the project environment, not your laptop, where you can review it like any other change."</p>
+    <p>"When I prepped this talk, an agent got this game running from the repo with flox activate, and the only thing it had to ask me for was the key."</p>
+  </aside>
+</section>
+
+<!-- 15 -->
 <section class="slide title-slide">
   <p class="eyebrow">Epilogue</p>
   <h2 style="font-size:76px">The suspect was never the code.</h2>
   <p class="big">It was everything around it.</p>
   <p style="margin-top:36px"><code style="font-size:28px">flox.dev/docs</code></p>
   <p><code style="font-size:28px">github.com/justincastilla/hollow-manor-mystery-II</code></p>
-  <p class="byline">Next: containers with flox containerize · composing environments with [include]</p>
+  <p class="byline literal">Next: containers with flox containerize · composing environments with [include]</p>
   <aside class="notes">
     <p>"That game is good code. It was everything around the code. Everything you saw is in this repo, and the docs are at flox.dev. Thank you."</p>
   </aside>
@@ -327,7 +403,20 @@ command = <span class="s">'python3 "$FLOX_ENV_PROJECT/server.py"'</span></pre>
   const slides = [...document.querySelectorAll(".slide")];
   const deck = document.getElementById("deck");
   const panel = document.getElementById("notes-panel");
-  slides.forEach((s, i) => s.dataset.n = `${i + 1} / ${slides.length}`);
+  const pad = (n) => String(n).padStart(2, "0");
+  slides.forEach((s, i) => {
+    s.dataset.n = `${i + 1} / ${slides.length}`;
+    const folio = document.createElement("div");
+    folio.className = "folio";
+    folio.innerHTML = `<span>The Works-on-My-Machine Murder</span><span>Exhibit ${pad(i + 1)} &nbsp;/&nbsp; ${pad(slides.length)}</span>`;
+    s.append(folio);
+    if (!s.classList.contains("title-slide")) {
+      const ex = document.createElement("div");
+      ex.className = "exhibit";
+      ex.textContent = pad(i + 1);
+      s.prepend(ex);
+    }
+  });
 
   let current = 0;
   function show(i) {

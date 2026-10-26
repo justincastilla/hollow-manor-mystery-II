@@ -1,6 +1,6 @@
 # 🕯️ Hollow Manor Mystery II: The Works-on-My-Machine Murder
 
-A 13-minute talk and live demo for people new to [Flox](https://flox.dev). It follows the *Murder at Hollow Manor* demo: an AI murder-mystery game that runs beautifully on one machine. This talk shows why it only runs there, then fixes that live with a Flox environment.
+A 15-minute talk and live demo for people new to [Flox](https://flox.dev). It follows the *Murder at Hollow Manor* demo: an AI murder-mystery game that runs beautifully on one machine. This talk shows why it only runs there, then fixes that live with a Flox environment.
 
 > The suspect was never the code. It was everything around it.
 
