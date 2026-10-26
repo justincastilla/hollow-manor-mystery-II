@@ -1,6 +1,6 @@
 ## Flox environment for Murder at Hollow Manor
 ## Docs: https://flox.dev/docs/reference/command-reference/manifest.toml/
-version = 1
+schema-version = "1.19.0"
 
 # Everyone gets the same Python, whatever their laptop ships with.
 [install]

@@ -11,7 +11,7 @@
 
 ## Day of
 
-- [ ] `talk/stage.sh` to build a fresh "before" copy at `../hollow-mansion-stage`
+- [ ] `talk/stage.sh` to build a fresh "before" copy at `../hollow-manor-mystery-stage`
 - [ ] `talk/preflight.sh` shows all ✓
 - [ ] Run `flox install python312` once somewhere other than the stage, so the package is already cached. Venue Wi-Fi is the real killer.
 - [ ] Terminal: large font, short prompt (`PS1='$ '`), stage copy open, history cleared of anything you wouldn't show

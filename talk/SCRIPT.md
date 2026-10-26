@@ -1,6 +1,6 @@
 # Speaker script: The Works-on-My-Machine Murder
 
-Thirteen minutes, beat by beat. **Bold slide numbers** match `talk/slides/index.html`. Quoted lines are what to say; code blocks are what to type. Every live step happens in the stage copy that `talk/stage.sh` builds at `../hollow-mansion-stage` (the game with no Flox environment).
+Thirteen minutes, beat by beat. **Bold slide numbers** match `talk/slides/index.html`. Quoted lines are what to say; code blocks are what to type. Every live step happens in the stage copy that `talk/stage.sh` builds at `../hollow-manor-mystery-stage` (the game with no Flox environment).
 
 Keep `talk/snippets/` open in an editor beside the terminal for the two paste beats.
 
@@ -116,8 +116,8 @@ Open `http://localhost:8666` and click *Enter the Manor*. Ask Madame Zora *"Did 
 **Slide 10.** On the second, clean machine (only Flox and git installed):
 
 ```bash
-git clone https://github.com/justincastilla/hollow-mansion-II.git
-cd hollow-mansion-II
+git clone https://github.com/justincastilla/hollow-manor-mystery-II.git
+cd hollow-manor-mystery-II
 flox activate --start-services
 ```
 

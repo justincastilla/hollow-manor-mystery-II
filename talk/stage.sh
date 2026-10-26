@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Builds the "before" copy of the game to work in live: Jessica's files, no Flox environment.
-# Usage: talk/stage.sh [stage-dir]    (default: ../hollow-mansion-stage)
+# Usage: talk/stage.sh [stage-dir]    (default: ../hollow-manor-mystery-stage)
 set -euo pipefail
 
 repo="$(cd "$(dirname "$0")/.." && pwd)"
-stage="${1:-$(dirname "$repo")/hollow-mansion-stage}"
-marker=".git/hollow-mansion-stage"
+stage="${1:-$(dirname "$repo")/hollow-manor-mystery-stage}"
+marker=".git/hollow-manor-mystery-stage"
 
 if [ -e "$stage" ]; then
   if [ ! -e "$stage/$marker" ]; then

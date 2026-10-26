@@ -1,4 +1,4 @@
-# 🕯️ Hollow Mansion II: The Works-on-My-Machine Murder
+# 🕯️ Hollow Manor Mystery II: The Works-on-My-Machine Murder
 
 A 13-minute talk and live demo for people new to [Flox](https://flox.dev). It follows the *Murder at Hollow Manor* demo: an AI murder-mystery game that runs beautifully on one machine. This talk shows why it only runs there, then fixes that live with a Flox environment.
 
@@ -25,8 +25,8 @@ The game itself is Jessica's ([JessicaGarson/hollow-manor-mystery](https://githu
 You need [Flox](https://flox.dev/docs/install-flox/) and a [Runpod API key](https://www.runpod.io/console/user/settings).
 
 ```bash
-git clone https://github.com/justincastilla/hollow-mansion-II.git
-cd hollow-mansion-II
+git clone https://github.com/justincastilla/hollow-manor-mystery-II.git
+cd hollow-manor-mystery-II
 cp .env.example .env              # add your RUNPOD_API_KEY; .env is gitignored
 flox activate --start-services
 flox services logs manor --follow
@@ -38,8 +38,8 @@ Then open http://localhost:8666. Settings live in `[vars]` in `.flox/env/manifes
 
 ```bash
 talk/preflight.sh                 # is this machine ready?
-talk/stage.sh                     # build the "before" copy at ../hollow-mansion-stage
-cd ../hollow-mansion-stage        # every live step happens here
+talk/stage.sh                     # build the "before" copy at ../hollow-manor-mystery-stage
+cd ../hollow-manor-mystery-stage        # every live step happens here
 ```
 
 Open `talk/slides/index.html` in a browser, then follow [`talk/SCRIPT.md`](talk/SCRIPT.md). Keys: `→`/`Space` next, `←` back, `N` speaker notes, `F` full screen.

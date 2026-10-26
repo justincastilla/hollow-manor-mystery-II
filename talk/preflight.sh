@@ -3,7 +3,7 @@
 set -uo pipefail
 
 repo="$(cd "$(dirname "$0")/.." && pwd)"
-stage="$(dirname "$repo")/hollow-mansion-stage"
+stage="$(dirname "$repo")/hollow-manor-mystery-stage"
 failures=0
 
 pass() { printf '  ✓ %s\n' "$1"; }
