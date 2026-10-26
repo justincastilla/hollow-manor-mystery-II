@@ -1,0 +1,16 @@
+[vars]
+PORT = "8666"
+DAILY_BUDGET_USD = "2"
+RATE_LIMIT_PER_MIN = "10"
+
+[hook]
+on-activate = '''
+  if [ -f "$FLOX_ENV_PROJECT/.env" ]; then
+    set -a
+    . "$FLOX_ENV_PROJECT/.env"
+    set +a
+  fi
+  if [ -z "${RUNPOD_API_KEY:-}" ]; then
+    echo "🕯️  RUNPOD_API_KEY is not set. Copy .env.example to .env and add your key." >&2
+  fi
+'''

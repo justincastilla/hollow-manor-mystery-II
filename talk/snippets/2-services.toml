@@ -1,0 +1,2 @@
+[services.manor]
+command = 'python3 "$FLOX_ENV_PROJECT/server.py"'

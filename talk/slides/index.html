@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Works-on-My-Machine Murder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0912;
+    --panel: #15111f;
+    --line: #2b2338;
+    --text: #e9e1d3;
+    --muted: #a99fb4;
+    --blood: #c4183a;
+    --candle: #e8c37a;
+    --moss: #8fbf8a;
+    --display: "Creepster", "Chiller", Georgia, serif;
+    --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #000; color: var(--text); font-family: var(--serif); }
+  body { overflow: hidden; }
+
+  /* Slides are authored at 1280x720 and scaled to fit the window. */
+  #deck { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide {
+    position: absolute; inset: 0; display: none; flex-direction: column; justify-content: center;
+    padding: 64px 96px; overflow: hidden;
+    background: radial-gradient(ellipse at 50% 0%, #1d1530 0%, var(--bg) 70%);
+  }
+  .slide.active { display: flex; }
+  .slide::after {
+    content: attr(data-n); position: absolute; right: 32px; bottom: 22px;
+    font: 14px var(--mono); color: var(--muted); opacity: .6;
+  }
+
+  h1, h2 { font-family: var(--display); font-weight: 400; letter-spacing: 1px; margin: 0 0 24px; color: var(--candle); }
+  h1 { font-size: 104px; line-height: 1; }
+  h2 { font-size: 64px; line-height: 1.05; }
+  p, li { font-size: 34px; line-height: 1.35; margin: 0 0 16px; }
+  .eyebrow { font: 600 18px var(--mono); letter-spacing: 4px; text-transform: uppercase; color: var(--blood); margin-bottom: 18px; }
+  .big { font-size: 46px; line-height: 1.25; }
+  .muted { color: var(--muted); }
+  .blood { color: var(--blood); }
+  .candle { color: var(--candle); }
+  em { color: var(--candle); }
+  code { font-family: var(--mono); font-size: .8em; color: var(--candle); }
+
+  pre {
+    margin: 0; padding: 22px 28px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    font: 24px/1.5 var(--mono); color: var(--text); white-space: pre; overflow: hidden;
+  }
+  pre .c { color: var(--muted); }
+  pre .k { color: var(--candle); }
+  pre .s { color: var(--moss); }
+  pre .p { color: var(--blood); }
+  .label { font: 600 16px var(--mono); letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+
+  .row { display: flex; gap: 32px; align-items: stretch; }
+  .row > * { flex: 1; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 28px; }
+  .card h3 { font: 600 34px var(--serif); margin: 0 0 8px; color: var(--candle); }
+  .card p { font-size: 28px; margin: 0; }
+  .card .who { font: 600 16px var(--mono); letter-spacing: 2px; text-transform: uppercase; color: var(--blood); margin-bottom: 14px; }
+
+  .layers { display: flex; flex-direction: column; gap: 14px; width: 760px; }
+  .layer { border-radius: 10px; padding: 20px 28px; font-size: 30px; display: flex; justify-content: space-between; align-items: center; }
+  .layer small { font: 18px var(--mono); color: var(--muted); }
+  .layer.project { background: #2a1a12; border: 2px solid var(--candle); color: var(--candle); }
+  .layer.mine { background: var(--panel); border: 1px solid var(--line); }
+
+  table { border-collapse: collapse; width: 100%; font-size: 30px; }
+  th { font: 600 16px var(--mono); letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0 20px 14px 0; border-bottom: 1px solid var(--line); }
+  td { padding: 18px 20px 18px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td:first-child { color: var(--candle); }
+  td code { font-size: 26px; }
+
+  .title-slide { text-align: center; align-items: center; }
+  .title-slide h1 { font-size: 112px; }
+  .candle-flame { font-size: 72px; margin-bottom: 8px; }
+  .byline { font: 20px var(--mono); color: var(--muted); letter-spacing: 1px; margin-top: 24px; }
+
+  /* Speaker notes: hidden on the slide, shown in a panel with N. */
+  .notes { display: none; }
+  #notes-panel {
+    display: none; position: fixed; left: 0; right: 0; bottom: 0; max-height: 38vh; overflow: auto;
+    background: rgba(12, 9, 18, .96); border-top: 2px solid var(--blood);
+    padding: 16px 28px 20px; font: 18px/1.5 system-ui, sans-serif; color: var(--text); z-index: 10;
+  }
+  #notes-panel.open { display: block; }
+  #notes-panel h4 { margin: 0 0 6px; font: 600 13px var(--mono); letter-spacing: 2px; text-transform: uppercase; color: var(--candle); }
+  #notes-panel p, #notes-panel li { font-size: 18px; margin: 0 0 6px; }
+  #hint { position: fixed; left: 16px; bottom: 12px; font: 12px var(--mono); color: #6d6478; z-index: 5; }
+
+  @media print {
+    @page { size: 1280px 720px; margin: 0; }
+    html, body { height: auto; overflow: visible; background: var(--bg); }
+    #deck { position: static; transform: none !important; width: 1280px; height: auto; }
+    .slide { position: relative; display: flex !important; width: 1280px; height: 720px; break-after: page; }
+    #notes-panel, #hint { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div id="deck">
+
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="candle-flame">🕯️</div>
+  <p class="eyebrow">Hollow Manor, part II</p>
+  <h1>The Works-on-My-Machine Murder</h1>
+  <p class="big muted">A Flox mystery in three clues</p>
+  <p class="byline">Justin Castilla · Developer Advocate, Flox</p>
+  <aside class="notes">
+    <p>Up as you walk on. Don't linger: advance as soon as you're at the mic.</p>
+  </aside>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <p class="eyebrow">Cold open</p>
+  <h2>It worked on that machine.</h2>
+  <p class="big">On mine, the manor stays dark.</p>
+  <pre><span class="c">$</span> python3 server.py
+<span class="p">⚠️  RUNPOD_API_KEY is not set; the manor will stay dark…</span></pre>
+  <aside class="notes">
+    <p>"You just watched that game run beautifully. It worked on that machine. The storm's washed out the road, and now it's on mine."</p>
+    <p>Terminal, stage copy: <code>python3 --version</code>, then <code>python3 server.py</code>. Ctrl-C.</p>
+    <p>"It starts, on a Python I never chose, with no key. The killer is still in the house. And it isn't Rosalind. It's the environment."</p>
+  </aside>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <p class="eyebrow">Meet the detective</p>
+  <h2>A Flox environment is one file.</h2>
+  <p class="big">The <em>tools</em>, the <em>settings</em>, and the <em>services</em> a project needs.</p>
+  <p class="big">Every machine that activates it gets the same thing.</p>
+  <aside class="notes">
+    <p>"Tonight's detective is Flox." Read the slide; this is the one sentence they should remember.</p>
+  </aside>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <p class="eyebrow">How it feels</p>
+  <h2>Your machine, plus the project.</h2>
+  <div class="row" style="align-items:center">
+    <div class="layers">
+      <div class="layer project">Hollow Manor's tools &amp; settings <small>flox activate</small></div>
+      <div class="layer mine">Your shell, editor, dotfiles <small>unchanged</small></div>
+      <div class="layer mine">Your OS: macOS or Linux <small>unchanged</small></div>
+    </div>
+    <div>
+      <p>No container to build.</p>
+      <p>No VM.</p>
+      <p class="candle">Leave the project, and the layer goes with you.</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>"No container to build, no VM. You keep your shell, your editor, your dotfiles. Flox layers the project's tools on top while you're in the project, and takes them away when you leave."</p>
+    <p>Behind at 2:00? Cut this to one line.</p>
+  </aside>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <p class="eyebrow">Clue 1</p>
+  <h2>Two Pythons. Three witnesses.</h2>
+  <div class="row">
+    <div class="card"><div class="who">The README</div><h3>"3.9+"</h3><p class="muted">Any Python will do, apparently.</p></div>
+    <div class="card"><div class="who">The Dockerfile</div><h3>3.12</h3><p class="muted"><code>FROM python:3.12-slim</code></p></div>
+    <div class="card"><div class="who">My laptop</div><h3>¯\_(ツ)_/¯</h3><p class="muted">Whatever it shipped with.</p></div>
+  </div>
+  <pre style="margin-top:32px"><span class="c">$</span> flox init
+<span class="c">$</span> flox install <span class="k">python312</span>
+<span class="c">$</span> flox activate</pre>
+  <aside class="notes">
+    <p>"The README says 3.9 or later. The Dockerfile says 3.12. My laptop says something else again."</p>
+    <p>Terminal: <code>flox init</code>, <code>flox install python312</code>, <code>flox activate</code>, <code>python3 --version</code>, <code>which python3</code>, <code>exit</code>, <code>python3 --version</code>.</p>
+    <p>"Inside: 3.12, from the project's .flox folder. Leave, and my laptop's Python is back, untouched."</p>
+  </aside>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <p class="eyebrow">The evidence</p>
+  <h2>What you asked for. What you got.</h2>
+  <div class="row">
+    <div>
+      <p class="label">.flox/env/manifest.toml</p>
+      <pre><span class="k">[install]</span>
+python.pkg-path = <span class="s">"python312"</span></pre>
+      <p style="margin-top:20px">You write this.</p>
+    </div>
+    <div>
+      <p class="label">.flox/env/manifest.lock</p>
+      <pre><span class="c">The exact build of</span>
+<span class="c">Python 3.12 for each</span>
+<span class="c">system, pinned.</span></pre>
+      <p style="margin-top:20px">Flox writes this.</p>
+    </div>
+  </div>
+  <p class="big candle" style="margin-top:28px">Commit both.</p>
+  <aside class="notes">
+    <p>Open manifest.toml in the stage copy, then glance at manifest.lock.</p>
+    <p>"The manifest is what I asked for. The lockfile is exactly what I got, down to the build. Commit both, and everyone on the team gets this same Python."</p>
+  </aside>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <p class="eyebrow">Clue 2</p>
+  <h2>The key in the shell.</h2>
+  <pre><span class="c">$</span> export RUNPOD_API_KEY=rpa_DEMO_not_real
+<span class="c">$</span> history | grep rpa_
+<span class="p">  512  export RUNPOD_API_KEY=rpa_DEMO_not_real</span></pre>
+  <p class="big" style="margin-top:28px">The README says <code>export</code>. Your shell history says <span class="blood">forever</span>.</p>
+  <aside class="notes">
+    <p>Type the three commands (end with <code>unset RUNPOD_API_KEY</code>). Fake key only.</p>
+    <p>"There it is, in my shell history, for good. The deploy docs pass it on the docker run command line, which is worse. The repo already gitignores .env. Nothing reads it."</p>
+    <p><code>flox edit</code>, paste talk/snippets/1-vars-and-hook.toml, save.</p>
+  </aside>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <p class="eyebrow">The rule</p>
+  <h2>Settings are shared. Secrets are loaded.</h2>
+  <div class="row">
+    <div>
+      <p class="label">[vars]: committed, shared</p>
+      <pre><span class="k">[vars]</span>
+PORT = <span class="s">"8666"</span>
+DAILY_BUDGET_USD = <span class="s">"2"</span></pre>
+    </div>
+    <div>
+      <p class="label">[hook]: reads .env, never shared</p>
+      <pre><span class="k">[hook]</span>
+on-activate = <span class="s">'''
+  set -a
+  . "$FLOX_ENV_PROJECT/.env"
+  set +a
+'''</span></pre>
+    </div>
+  </div>
+  <p class="big candle" style="margin-top:28px">A secret never goes in the manifest.</p>
+  <aside class="notes">
+    <p>"[vars] is for settings, like the port and the daily budget. They're committed, so everyone shares them. Secrets get loaded by the hook from a .env file that never leaves your machine. The manifest is shared, and can go to FloxHub, so a secret never goes in it."</p>
+    <p>Slide shows the hook simplified; the real one also checks the file exists and warns when the key is missing.</p>
+    <p><code>flox activate</code>, <code>echo "$DAILY_BUDGET_USD"</code>, <code>exit</code>.</p>
+  </aside>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <p class="eyebrow">Clue 3</p>
+  <h2>The server nobody managed.</h2>
+  <p class="big"><code>python3 server.py</code> lives and dies with one terminal tab.</p>
+  <div class="row" style="margin-top:12px">
+    <pre><span class="k">[services.manor]</span>
+command = <span class="s">'python3 "$FLOX_ENV_PROJECT/server.py"'</span></pre>
+  </div>
+  <pre style="margin-top:24px"><span class="c">$</span> flox activate --start-services
+<span class="c">$</span> flox services logs manor --follow</pre>
+  <aside class="notes">
+    <p>"Close the tab, lose the game, lose the logs."</p>
+    <p><code>flox edit</code>, paste talk/snippets/2-services.toml, save. Then the two commands (plus <code>flox services status</code> if on time).</p>
+    <p>Browser: localhost:8666, Enter the Manor, ask Zora "Did anyone leave the séance early?" Point at the log. 60 seconds max.</p>
+    <p>"The environment runs the server for me, with the settings and the key already loaded." Ctrl-C, exit.</p>
+  </aside>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <p class="eyebrow">The accusation</p>
+  <h2>A clean machine. One command.</h2>
+  <pre><span class="c">$</span> git clone https://github.com/justincastilla/hollow-mansion-II.git
+<span class="c">$</span> cd hollow-mansion-II
+<span class="c">$</span> flox activate --start-services</pre>
+  <p class="big" style="margin-top:28px">No clone at all? <code>flox push</code>, then <code>flox activate -r</code>.</p>
+  <aside class="notes">
+    <p>Second machine. The hook prints the .env.example hint: "A brand-new teammate, and the environment tells them exactly what's missing."</p>
+    <p><code>exit</code>, <code>cp .env.example .env</code>, paste the key, activate again, open the game.</p>
+    <p>"You don't even need the clone: flox push sends the environment to FloxHub, and anyone on the team runs flox activate -r to step into it."</p>
+  </aside>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <p class="eyebrow">The reveal</p>
+  <h2>Case closed.</h2>
+  <table>
+    <tr><th>The clue</th><th>The culprit</th><th>The evidence</th></tr>
+    <tr><td>Two Pythons</td><td>No pinned toolchain</td><td><code>flox install</code> + the lockfile</td></tr>
+    <tr><td>The key in the shell</td><td>Secrets with no home</td><td><code>[hook]</code>, with settings in <code>[vars]</code></td></tr>
+    <tr><td>The foreground process</td><td>A server nobody managed</td><td><code>[services]</code></td></tr>
+    <tr><td>"Works on my machine"</td><td>All of the above</td><td><code>flox activate</code></td></tr>
+  </table>
+  <aside class="notes">
+    <p>Walk it row by row: "Two Pythons: flox install and the lockfile. The key in the shell: a hook, with settings in vars. The server nobody managed: services. And works on my machine: flox activate."</p>
+  </aside>
+</section>
+
+<!-- 12 -->
+<section class="slide title-slide">
+  <p class="eyebrow">Epilogue</p>
+  <h2 style="font-size:76px">The suspect was never the code.</h2>
+  <p class="big">It was everything around it.</p>
+  <p style="margin-top:36px"><code style="font-size:28px">flox.dev/docs</code></p>
+  <p><code style="font-size:28px">github.com/justincastilla/hollow-mansion-II</code></p>
+  <p class="byline">Next: containers with flox containerize · composing environments with [include]</p>
+  <aside class="notes">
+    <p>"That game is good code. It was everything around the code. Everything you saw is in this repo, and the docs are at flox.dev. Thank you."</p>
+  </aside>
+</section>
+
+</div>
+
+<div id="notes-panel"></div>
+<div id="hint">← → navigate · N notes · F full screen</div>
+
+<script>
+  const slides = [...document.querySelectorAll(".slide")];
+  const deck = document.getElementById("deck");
+  const panel = document.getElementById("notes-panel");
+  slides.forEach((s, i) => s.dataset.n = `${i + 1} / ${slides.length}`);
+
+  let current = 0;
+  function show(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, j) => s.classList.toggle("active", j === current));
+    const notes = slides[current].querySelector(".notes");
+    panel.innerHTML = `<h4>Slide ${current + 1} notes</h4>` + (notes ? notes.innerHTML : "<p>(none)</p>");
+    if (location.hash !== `#${current + 1}`) history.replaceState(null, "", `#${current + 1}`);
+  }
+  function fit() {
+    const scale = Math.min(innerWidth / 1280, innerHeight / 720);
+    deck.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+
+  addEventListener("keydown", (e) => {
+    if (["ArrowRight", "ArrowDown", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); show(current + 1); }
+    else if (["ArrowLeft", "ArrowUp", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); show(current - 1); }
+    else if (e.key === "Home") show(0);
+    else if (e.key === "End") show(slides.length - 1);
+    else if (e.key === "n" || e.key === "N") panel.classList.toggle("open");
+    else if (e.key === "f" || e.key === "F") {
+      document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+    }
+  });
+  addEventListener("click", (e) => { if (!panel.contains(e.target)) show(current + (e.clientX < innerWidth / 3 ? -1 : 1)); });
+  addEventListener("resize", fit);
+
+  fit();
+  show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>
