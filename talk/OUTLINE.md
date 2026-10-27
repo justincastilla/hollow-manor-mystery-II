@@ -32,4 +32,4 @@
 
 ## Deliberately left out
 
-Containers (`flox containerize`), composition (`[include]`), and builds. They're good follow-up material, but one loop done well is enough for this slot. If there's Q&A, the closing slide points to the docs for each.
+Containers (`flox containerize`), composition (`[include]`), and builds. They're good follow-up material, but one loop done well is enough for this slot.
